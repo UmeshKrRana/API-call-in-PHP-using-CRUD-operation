@@ -189,6 +189,56 @@
 
 		}
 
+// =============================== Update Post By slug =================================================
+
+		public function updatePostById($slug, $dataArray) {
+				$data  				=		array();
+				$db 				=		new DBController();
+				$conn 				=		$db->connect();
+
+				$title 				=		mysqli_real_escape_string($conn, $dataArray['title']);
+				$slug				=		str_replace(' ', '-', strtolower($title));
+				$slug               =       preg_replace('/[^A-Za-z0-9\-]/', '', $slug);
+				$slug               =       preg_replace('/-+/', '-', $slug);
+
+				$description 		=		mysqli_real_escape_string($conn, $dataArray['description']);
+				$featured 			=		$dataArray['featured'];
+				$status 			=		$dataArray['status'];
+
+				if(isset($title) && ($title!="")) {
+					if(is_numeric($featured)) {
+						$sql 			=		"UPDATE post SET title = '".$title."', slug = '".$slug."', description = '".$description."', featured = '".$featured."', status = '".$status."' WHERE slug = '".$dataArray['slug']."' ";
+						$result  		=	$conn->query($sql);
+						if($result) {
+							$data['status']   =  "SUCCESS";
+							$data['message']  =  "Post successfully updated";
+						}
+						else {
+							$data['status']   =  "FAILURE";
+							$data['message']  =  "Failed to update due to server error";
+							$data['error']    =   "ERROR ! ".mysqli_error($conn);
+						}
+					}
+
+					else {
+						$data['status']       =  "FAILURE";
+						$data['message']      =  "Featured value should be an integer(0-1)";
+						$data['error']    	  =  "ERROR ! ".mysqli_error($conn);
+					}
+
+				}
+				else {
+					$data['status'] =		'FAILURE';
+					$data['message']=		'Please enter the post title';
+					$data['error']	=		'ERROR '.mysqli_error($conn);
+				}
+
+				$db->close($conn);
+				return $data;
+
+		}
+
+
 
 	// ============================  Delete Post By Id ========================================
 

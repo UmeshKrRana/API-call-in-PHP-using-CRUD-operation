@@ -40,8 +40,27 @@ if(isset($_REQUEST['action']) && ($_REQUEST['action']) == 'listslug') {
 // =======================  Update Post By Id =======================================
 if(isset($_REQUEST['action']) && ($_REQUEST['action']) == 'update') {
 	$id 			  =  			$_REQUEST['id'];
-	$listResult 	  = 			$applicationControl->updatePostById($id, $_REQUEST);
+	$updateResult 	  = 			$applicationControl->updatePostById($id, $_REQUEST);
 	echo json_encode($listResult);
 }
+
+
+// =======================  Update Post By Slug =======================================
+if(isset($_REQUEST['action']) && ($_REQUEST['action']) == 'updateslug') {
+	$slug 			  =  			$_REQUEST['slug'];
+	$updateResult 	  = 			$applicationControl->updatePostBySlug($slug, $_REQUEST);
+	echo json_encode($listResult);
+}
+
+// =======================  Delete Post By Id =======================================
+if(isset($_REQUEST['action']) && ($_REQUEST['action']) == 'delete') {
+	$id 			  =  			$_REQUEST['id'];
+	$deleteResult 	  = 			$applicationControl->deletePostById($id, $_REQUEST);
+	echo json_encode($listResult);
+}
+
+
+
+
 
 ?>
